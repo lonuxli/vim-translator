@@ -256,7 +256,23 @@ function! s:cursor_translate()
 endfunction
 
 function! s:visual_translate()
-    call s:translate(s:get_visual_select(), 0, 0, 0, 0)
+	"使用函数get_visual_select_2()对选中英文进行无效字符过滤
+	"call s:translate(s:get_visual_select(), 0, 0, 0, 0)
+	call s:translate(s:get_visual_select_2(), 0, 0, 0, 0)
+endfunction
+
+function! s:get_visual_select_2()
+	silent! normal! gv"ay
+	let l:wds=substitute(string(@a), "\\n", "", "g")
+	let l:wds=substitute(string(l:wds), "\r", "", "g")
+	let l:wds=substitute(string(l:wds), "\/", " ", "g")
+	let l:wds=substitute(string(l:wds), "*", "", "g")
+	let l:wds=substitute(string(l:wds), "  ", " ", "g")
+	let l:wds=substitute(string(l:wds), "'", "", "g")
+	if len(@a) > 0 && g:translator_outputype == 'echo'
+		redraw!
+	endif
+	return l:wds
 endfunction
 
 function! s:get_visual_select()
