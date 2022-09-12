@@ -267,6 +267,8 @@ function! s:get_visual_select_2()
 	let l:wds=substitute(string(l:wds), "\\r", " ", "g")
 	let l:wds=substitute(string(l:wds), "\/", " ", "g")
 	let l:wds=substitute(string(l:wds), "\*", "", "g")
+	" 删除邮件reply前置符号
+	let l:wds=substitute(string(l:wds), "> ", "", "g")
 	"删除tab键
 	let l:wds=substitute(string(l:wds), "	", "", "g")
 	"多个空格转换成一个
