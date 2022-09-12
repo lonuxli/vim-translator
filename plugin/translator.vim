@@ -263,15 +263,22 @@ endfunction
 
 function! s:get_visual_select_2()
 	silent! normal! gv"ay
-	let l:wds=substitute(string(@a), "\\n", "", "g")
-	let l:wds=substitute(string(l:wds), "\r", "", "g")
+	let l:wds=substitute(string(@a), "\\n", " ", "g")
+	let l:wds=substitute(string(l:wds), "\\r", " ", "g")
 	let l:wds=substitute(string(l:wds), "\/", " ", "g")
-	let l:wds=substitute(string(l:wds), "*", "", "g")
-	let l:wds=substitute(string(l:wds), "  ", " ", "g")
-	let l:wds=substitute(string(l:wds), "'", "", "g")
+	let l:wds=substitute(string(l:wds), "\*", "", "g")
+	"删除tab键
+	let l:wds=substitute(string(l:wds), "	", "", "g")
+	"多个空格转换成一个
+	let l:wds=substitute(string(l:wds), "  *", " ", "g")
+	"删除行头/尾的单引号符,但是Basic RegEx在substitute()中存在问题
+	"let l:wds=substitute(string(l:wds), "^'", "", "g")
+	"let l:wds=substitute(string(l:wds), "'$", "", "g")
+	let l:wds=substitute(string(l:wds), "''*", "'", "g")
 	if len(@a) > 0 && g:translator_outputype == 'echo'
 		redraw!
 	endif
+
 	return l:wds
 endfunction
 
